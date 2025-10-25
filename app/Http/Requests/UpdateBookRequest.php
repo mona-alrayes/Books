@@ -30,7 +30,7 @@ class UpdateBookRequest extends FormRequest
         ];
     }
 
-    public function messages() : array
+    public function messages(): array
     {
         return [
             'title.string' => 'The book title must be a string.',
@@ -43,14 +43,5 @@ class UpdateBookRequest extends FormRequest
             'isbn.unique' => 'The ISBN must be unique.',
         ];
     }
-
-    public function prepareForValidation(): void
-    {
-        $this->merge([
-            'title' => $this->input('title') ? ucwords(trim((string)$this->input('title'))) : null,
-            'author' => $this->input('author') ? ucwords(trim((string)$this->input('author'))) : null,
-            'published_date' => $this->filled('published_date') ? (int) trim((string)$this->input('published_date')) : null,
-            'isbn' => $this->filled('isbn')? trim($this->input('isbn')) : null,
-        ]);
-    }
+    
 }

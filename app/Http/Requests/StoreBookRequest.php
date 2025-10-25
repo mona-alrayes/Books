@@ -20,33 +20,34 @@ class StoreBookRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-            'published_date' => 'nullable|integer|min:1900|max:' . date('Y'), // Ensure the year is not in the future
-            'description' => 'nullable|string|max:2000',
-            'isbn' => 'nullable|string|unique:books,isbn',
-        ];
-    }
-    /**
-     * validation messages 
-     *
-     * @return array
-     */
-    public function messages(): array
-    {
-        return [
-            'title.required' => 'The book title is required.',
-            'author.required' => 'The author name is required.',
-            'published_date.integer' => 'The published year must be a valid year.',
-            'published_date.min' => 'The published year must be at least 1900.',
-            'published_date.max' => 'The published year cannot be in the future.',
-            'description.string' => 'The description must be a valid string.',
-            'description.max' => 'The description may not be greater than 2000 characters.',
-            'isbn.unique' => 'The ISBN must be unique.',
-        ];
-    }
+{
+    return [
+        'title' => 'required|string|max:255',
+        'author' => 'required|string|max:255',
+        // accept a full date (YYYY-MM-DD) and ensure it's not in the future
+        'published_date' => 'nullable|date|before_or_equal:today',
+        'description' => 'nullable|string|max:2000',
+        'isbn' => 'nullable|string|unique:books,isbn',
+    ];
+}
+
+/**
+ * Get custom messages for validator errors.
+ *
+ * @return array
+ */
+public function messages(): array
+{
+    return [
+        'title.required' => 'The book title is required.',
+        'author.required' => 'The author name is required.',
+        'published_date.date' => 'The published date must be a valid date (YYYY-MM-DD).',
+        'published_date.before_or_equal' => 'The published date cannot be in the future.',
+        'description.string' => 'The description must be a valid string.',
+        'description.max' => 'The description may not be greater than 2000 characters.',
+        'isbn.unique' => 'The ISBN must be unique.',
+    ];
+}
 
     /**
      * trim inputs and make some of them captilized like title , author 
