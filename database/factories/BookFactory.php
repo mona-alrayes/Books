@@ -19,7 +19,7 @@ class BookFactory extends Factory
         return [
             'title' => $this->faker->sentence(3),
             'author' => $this->faker->name(),
-            'published_year' => $this->faker->numberBetween(1900, date('Y')),
+            'published_date' => $this->faker->date('Y-m-d', 'now'),
             'description' => $this->faker->paragraph(),
             'isbn' => $this->faker->unique()->isbn13(),
         ];
